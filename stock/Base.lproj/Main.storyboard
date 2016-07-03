@@ -177,7 +177,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="name" width="40" minWidth="40" maxWidth="1000" id="PwC-iq-5n7">
+                                                <tableColumn identifier="name" width="79.5" minWidth="40" maxWidth="1000" id="PwC-iq-5n7">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="名称">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -191,7 +191,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="baH-wT-QQr" customClass="NameTableCell" customModule="stock" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1" width="40" height="30"/>
+                                                            <rect key="frame" x="1" y="1" width="79.5" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ee1-T9-k2k">
@@ -219,7 +219,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="price" width="40" minWidth="40" maxWidth="1000" id="rZu-uP-7Uk">
+                                                <tableColumn identifier="price" width="79.5" minWidth="40" maxWidth="1000" id="rZu-uP-7Uk">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="价格">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -233,7 +233,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="6U1-2C-nYb">
-                                                            <rect key="frame" x="44" y="1" width="40" height="30"/>
+                                                            <rect key="frame" x="83.5" y="1" width="79.5" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wSb-D3-Wbg">
@@ -251,7 +251,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="rate" width="40" minWidth="40" maxWidth="1000" id="dcf-VE-I8j">
+                                                <tableColumn identifier="rate" width="80" minWidth="40" maxWidth="1000" id="dcf-VE-I8j">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="涨跌幅">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -265,7 +265,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="64C-Jy-ggk">
-                                                            <rect key="frame" x="87" y="1" width="40" height="30"/>
+                                                            <rect key="frame" x="166" y="1" width="80" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="InU-2P-2oN">

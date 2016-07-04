@@ -154,6 +154,16 @@
                                     <segue destination="H3Q-GQ-CYq" kind="popover" popoverAnchorView="cqv-aL-cPL" popoverBehavior="t" preferredEdge="maxY" id="TVB-VN-s4c"/>
                                 </connections>
                             </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oLp-bq-tWa">
+                                <rect key="frame" x="180" y="7" width="20" height="20"/>
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="search" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Rmj-HZ-uHF">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="EnX-dA-1K0" kind="show" id="vsu-Wz-jDD"/>
+                                </connections>
+                            </button>
                             <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XC3-Ve-Qnk">
                                 <rect key="frame" x="0.0" y="35" width="220" height="280"/>
                                 <clipView key="contentView" ambiguous="YES" id="N1s-XQ-sb7">
@@ -181,7 +191,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="baH-wT-QQr" customClass="NameTableCell" customModule="stock" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1" width="69.5" height="30"/>
+                                                            <rect key="frame" x="1" y="1" width="70" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ee1-T9-k2k">
@@ -223,7 +233,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="6U1-2C-nYb">
-                                                            <rect key="frame" x="73.5" y="1" width="69.5" height="30"/>
+                                                            <rect key="frame" x="73.5" y="1" width="70" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wSb-D3-Wbg">
@@ -241,7 +251,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="rate" width="70" minWidth="40" maxWidth="1000" id="dcf-VE-I8j">
+                                                <tableColumn identifier="rate" width="69.5" minWidth="40" maxWidth="1000" id="dcf-VE-I8j">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="涨跌幅">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -291,16 +301,6 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oLp-bq-tWa">
-                                <rect key="frame" x="180" y="7" width="20" height="20"/>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="search" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Rmj-HZ-uHF">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <segue destination="EnX-dA-1K0" kind="show" id="vsu-Wz-jDD"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <connections>

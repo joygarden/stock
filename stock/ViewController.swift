@@ -31,7 +31,7 @@ class ViewController: NSViewController {
                     })
                 }
             }
-        }.resume()
+            }.resume()
     }
     
     override func viewDidLoad() {
@@ -63,13 +63,8 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
             let textField = result.textField;
             let rateStr = curr["rate"]! as String
             let rate = Float(rateStr)
-            if rate > 0 {
-                textField?.textColor = NSColor.redColor()
-            }
-            if rate < 0 {
-                textField?.textColor = NSColor.greenColor()
-            }
-            textField?.stringValue  = id == "rate" ? (curr[id!]! + "%") : curr[id!]!
+            textField?.textColor = rate > 0 ? NSColor.redColor() : rate < 0 ? NSColor.greenColor() : NSColor.blackColor()
+            textField?.stringValue  = id == "rate" ? (rateStr + "%") : curr[id!]!
             return result
         }
     }

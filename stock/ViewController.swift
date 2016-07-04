@@ -31,9 +31,9 @@ class ViewController: NSViewController {
                     })
                 }
             }
-        }.resume()
+            }.resume()
     }
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.stockTable.setDataSource(self)
@@ -61,9 +61,19 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
         } else {
             let result : NSTableCellView = tableView.makeViewWithIdentifier(id!, owner: self) as! NSTableCellView
             let textField = result.textField;
-            let rate = curr["rate"]! as String
-            textField?.textColor = rate.containsString("-") ? NSColor.greenColor() : NSColor.redColor()
-            textField?.stringValue  = curr[id!]!
+            let rateStr = curr["rate"]! as String
+            let rate = Float(rateStr)
+            if rate > 0 {
+                textField?.textColor = NSColor.redColor()
+            }
+            if rate < 0 {
+                textField?.textColor = NSColor.greenColor()
+            }
+            var val = curr[id!]!
+            if id == "rate" {
+                val += "%"
+            }
+            textField?.stringValue  = val            
             return result
         }
     }

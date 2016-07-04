@@ -129,7 +129,7 @@ class StockService {
                     data["name"] = tmp2[1]
                     data["code"] = code.substringFromIndex(code.startIndex.advancedBy(2))
                     data["price"] = tmp2[3]
-                    data["rate"] = tmp2[32]+"%"
+                    data["rate"] = tmp2[32]
                     stockData.append(data)
                 }
             }

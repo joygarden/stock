@@ -10,12 +10,13 @@ import Cocoa
 
 class EditViewController: NSViewController {
     
-    
     @IBOutlet weak var stockEditTableView: NSTableView!
     
     @IBOutlet weak var alphaSlider: NSSlider!
     
     var codeArray = Array<Dictionary<String,String>>()
+    
+    let rowType = "rowType"
     
     override func viewDidLoad() {
         let alpha = StockService.sharedInstance.readAlpha()
@@ -23,6 +24,7 @@ class EditViewController: NSViewController {
         codeArray = StockService.sharedInstance.readStockData();
         self.stockEditTableView.setDataSource(self)
         self.stockEditTableView.setDelegate(self)
+        stockEditTableView.registerForDraggedTypes([rowType])
     }
     
     @IBAction func savePressed(sender: NSButton) {
@@ -86,5 +88,41 @@ extension EditViewController: NSTableViewDataSource, NSTableViewDelegate {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return self.codeArray.count
     }
+    
+    func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
+        let data = NSKeyedArchiver.archivedDataWithRootObject(rowIndexes)
+        pboard.declareTypes([rowType], owner: self)
+        pboard.setData(data, forType: rowType)
+        return true
+    }
+    
+    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
+        tableView.setDropRow(row, dropOperation: NSTableViewDropOperation.Above)
+        return NSDragOperation.Move
+    }
+    
+    func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
+        let pasteboard = info.draggingPasteboard()
+        let rowData = pasteboard.dataForType(rowType)
+        if rowData != nil {
+            let indexSet = NSKeyedUnarchiver.unarchiveObjectWithData(rowData!) as! NSIndexSet
+            let movingFromIndex = indexSet.firstIndex
+            let item = codeArray[movingFromIndex]
+            _moveItem(item, from: movingFromIndex, to: row)
+            return true
+        }
+        return false
+    }
+    
+    func _moveItem(item : Dictionary<String,String>, from: Int, to: Int) {
+        codeArray.removeAtIndex(from)
+        if(to > codeArray.endIndex) {
+            codeArray.append(item)
+        } else {
+            codeArray.insert(item, atIndex: to)
+        }
+        stockEditTableView.reloadData()
+    }
+
     
 }

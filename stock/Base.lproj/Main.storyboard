@@ -319,6 +319,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="220" height="315"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hAR-JX-Lmv">
+                                <rect key="frame" x="14" y="0.0" width="81" height="32"/>
+                                <buttonCell key="cell" type="push" title="取消" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LsT-g4-ufA">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="cancelPressed:" target="H3Q-GQ-CYq" id="uzv-Ua-UDQ"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bnU-ZR-2Vb">
+                                <rect key="frame" x="18" y="42" width="56" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="透明度：" id="180-1j-VzA">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iqb-jk-1Id">
+                                <rect key="frame" x="85" y="40" width="117" height="20"/>
+                                <sliderCell key="cell" state="on" alignment="left" maxValue="10" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="Kg6-l0-tLY"/>
+                                <connections>
+                                    <action selector="valueChanged:" target="H3Q-GQ-CYq" id="TVx-hy-abo"/>
+                                </connections>
+                            </slider>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KLG-zS-HRp">
+                                <rect key="frame" x="125" y="0.0" width="81" height="32"/>
+                                <buttonCell key="cell" type="push" title="保存" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tdE-FN-d2z">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="savePressed:" target="H3Q-GQ-CYq" id="GfM-tf-TRJ"/>
+                                </connections>
+                            </button>
                             <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFf-ZV-A6C">
                                 <rect key="frame" x="0.0" y="67" width="220" height="248"/>
                                 <clipView key="contentView" ambiguous="YES" id="Sk4-a0-Z2Q">
@@ -419,13 +454,10 @@
                                                             <rect key="frame" x="147" y="1" width="70" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E7T-Rq-wGo">
-                                                                    <rect key="frame" x="3" y="7" width="50" height="16"/>
-                                                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="sort" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="uG8-bC-MFv">
-                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                        <font key="font" metaFont="system"/>
-                                                                    </buttonCell>
-                                                                </button>
+                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ImG-iV-D2k">
+                                                                    <rect key="frame" x="25" y="5" width="20" height="20"/>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="sort" id="HWg-zf-jGP"/>
+                                                                </imageView>
                                                             </subviews>
                                                         </tableCellView>
                                                     </prototypeCellViews>
@@ -448,41 +480,6 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hAR-JX-Lmv">
-                                <rect key="frame" x="14" y="0.0" width="81" height="32"/>
-                                <buttonCell key="cell" type="push" title="取消" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LsT-g4-ufA">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="cancelPressed:" target="H3Q-GQ-CYq" id="uzv-Ua-UDQ"/>
-                                </connections>
-                            </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bnU-ZR-2Vb">
-                                <rect key="frame" x="18" y="42" width="56" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="透明度：" id="180-1j-VzA">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iqb-jk-1Id">
-                                <rect key="frame" x="85" y="40" width="117" height="20"/>
-                                <sliderCell key="cell" state="on" alignment="left" maxValue="10" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="Kg6-l0-tLY"/>
-                                <connections>
-                                    <action selector="valueChanged:" target="H3Q-GQ-CYq" id="TVx-hy-abo"/>
-                                </connections>
-                            </slider>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KLG-zS-HRp">
-                                <rect key="frame" x="125" y="0.0" width="81" height="32"/>
-                                <buttonCell key="cell" type="push" title="保存" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tdE-FN-d2z">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="savePressed:" target="H3Q-GQ-CYq" id="GfM-tf-TRJ"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <connections>

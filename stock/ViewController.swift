@@ -39,7 +39,6 @@ class ViewController: NSViewController {
         self.stockTable.setDataSource(self)
         self.stockTable.setDelegate(self)
         StockService.sharedInstance.initCodes()
-        // Do any additional setup after loading the view.
         NSTimer.scheduledTimerWithTimeInterval(2,target:self,selector:#selector(self.requestData),
                                                userInfo:nil,repeats:true)
     }
@@ -53,16 +52,16 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
         let id = tableColumn?.identifier
         
         if id == "name" {
-            let result : NameTableCell = tableView.makeViewWithIdentifier(id!, owner: self) as! NameTableCell
             let code = curr["code"]
+            let result : NameTableCell = tableView.makeViewWithIdentifier(id!, owner: self) as! NameTableCell
             result.itemField.stringValue = curr["name"]!
             result.itemLabel.stringValue = code!.substringFromIndex(code!.startIndex.advancedBy(2))
             return result
         } else {
-            let result : NSTableCellView = tableView.makeViewWithIdentifier(id!, owner: self) as! NSTableCellView
-            let textField = result.textField;
             let rateStr = curr["rate"]! as String
             let rate = Float(rateStr)
+            let result : NSTableCellView = tableView.makeViewWithIdentifier(id!, owner: self) as! NSTableCellView
+            let textField = result.textField;
             textField?.textColor = rate > 0 ? NSColor.redColor() : rate < 0 ? NSColor.greenColor() : NSColor.blackColor()
             textField?.stringValue  = id == "rate" ? (rateStr + "%") : curr[id!]!
             return result

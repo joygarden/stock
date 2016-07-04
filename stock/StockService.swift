@@ -62,8 +62,6 @@ class StockService {
         initCodes()
     }
     
-    
-    
     func readAlpha() -> CGFloat {
         let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
         let listData = NSDictionary(contentsOfFile: filePath!)!
@@ -111,8 +109,6 @@ class StockService {
             }
         }.resume()
     }
-    
-    
     
     func generateStockArrayForString(text:String) -> Array<Dictionary<String,String>> {
         var stockData = Array<Dictionary<String,String>>()

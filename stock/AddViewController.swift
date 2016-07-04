@@ -12,7 +12,6 @@ class AddViewController: NSViewController {
     
     @IBOutlet weak var codeField: NSTextField!
     
-    
     @IBAction func addStock(sender : AnyObject)  {
         let code = codeField.stringValue;
         StockService.sharedInstance.addStock(code)

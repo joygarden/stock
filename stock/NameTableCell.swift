@@ -12,7 +12,6 @@ class NameTableCell : NSTableCellView {
     
     @IBOutlet weak var itemField: NSTextField!
     
-    
     @IBOutlet weak var itemLabel: NSTextField!
     
 }

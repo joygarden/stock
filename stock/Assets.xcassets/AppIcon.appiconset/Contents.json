@@ -59,13 +59,6 @@
       "idiom" : "mac",
       "filename" : "mac-appicon-512@2x.png",
       "scale" : "2x"
-    },
-    {
-      "size" : "256x256",
-      "idiom" : "mac",
-      "filename" : "mac-appicon-512@1x.png",
-      "unassigned" : true,
-      "scale" : "2x"
     }
   ],
   "info" : {

@@ -12,7 +12,11 @@ class StockService {
     
     //sh603398,sz300440...
     static var codes = ""
+    
+    static let ALPHA_KEY = "alpha"
 
+    static let STOCKS_KEY = "stocks"
+    
     class var sharedInstance : StockService{
         struct Static {
             static var instance: StockService?
@@ -38,34 +42,44 @@ class StockService {
         }
         StockService.codes = code
     }
-    
+
     func readStockData() -> Array<Dictionary<String,String>> {
-        let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
-        let listData = NSDictionary(contentsOfFile: filePath!)!
-        return listData["stocks"] as! Array<Dictionary<String,String>>
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let data = defaults.arrayForKey(StockService.STOCKS_KEY)
+        if data != nil {
+            return data as! Array<Dictionary<String,String>>
+        }
+        return Array()
+        
+//        let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
+//        let listData = NSDictionary(contentsOfFile: filePath!)!
+//        return listData["stocks"] as! Array<Dictionary<String,String>>
     }
     
     func writeStockData(codeDict : Array<Dictionary<String,String>>) {
-        let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
-        let listData = NSDictionary(contentsOfFile: filePath!)!
-        listData.setValue(codeDict, forKeyPath: "stocks")
-        listData.writeToFile(filePath!, atomically: true)
+        
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(codeDict, forKey: StockService.STOCKS_KEY)
         initCodes()
-    }
-    
-    func writeAllData(codeDict : Array<Dictionary<String,String>>, alpha : NSNumber ) {
-        let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
-        let listData = NSDictionary(contentsOfFile: filePath!)!
-        listData.setValue(codeDict, forKeyPath: "stocks")
-        listData.setValue(alpha, forKey: "alpha")
-        listData.writeToFile(filePath!, atomically: true)
-        initCodes()
+//
+//        let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
+//        let listData = NSDictionary(contentsOfFile: filePath!)!
+//        listData.setValue(codeDict, forKeyPath: "stocks")
+//        listData.writeToFile(filePath!, atomically: true)
+        
+        
     }
     
     func readAlpha() -> CGFloat {
-        let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
-        let listData = NSDictionary(contentsOfFile: filePath!)!
-        return CGFloat(listData["alpha"] as! Float)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let alpha = defaults.stringForKey(StockService.ALPHA_KEY)
+        return alpha == nil ? CGFloat(0.8) : CGFloat(Float(alpha!)!)
+    }
+    
+    func writeAlpha(alpha : Float)  {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(alpha, forKey: StockService.ALPHA_KEY)
     }
     
     func addStock(code : String)  {

@@ -28,7 +28,8 @@ class EditViewController: NSViewController {
     }
     
     @IBAction func savePressed(sender: NSButton) {
-        StockService.sharedInstance.writeAllData(codeArray,alpha: 1-alphaSlider.floatValue/10)
+        StockService.sharedInstance.writeStockData(codeArray)
+        StockService.sharedInstance.writeAlpha(1-alphaSlider.floatValue/10)
         if (self.presentingViewController != nil) {
             self.presentingViewController?.dismissViewController(self)
         }

@@ -7,6 +7,30 @@
 //
 
 import Cocoa
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class ViewController: NSViewController {
     
@@ -14,32 +38,32 @@ class ViewController: NSViewController {
     
     var stockArray = Array<Dictionary<String,String>>()
     
-    func requestData() {
+    @objc func requestData() {
         if StockService.codes.isEmpty {
             stockArray = Array<Dictionary<String,String>>()
             stockTable.reloadData()
             return
         }
-        let url = NSURL(string: "http://qt.gtimg.cn/q="+StockService.codes)
+        let url = URL(string: "http://qt.gtimg.cn/q="+StockService.codes)
         let enc = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue))
-        NSURLSession.sharedSession().dataTaskWithURL(url!) { (data, resp, error) in
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, resp, error) in
             if data != nil {
                 if let text = NSString(data:data!, encoding: enc) {
                     self.stockArray = StockService.sharedInstance.generateStockArrayForString(text as String)
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.stockTable.reloadData()
                     })
                 }
             }
-            }.resume()
+            }) .resume()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.stockTable.setDataSource(self)
-        self.stockTable.setDelegate(self)
+        self.stockTable.dataSource = self
+        self.stockTable.delegate = self
         StockService.sharedInstance.initCodes()
-        NSTimer.scheduledTimerWithTimeInterval(2,target:self,selector:#selector(self.requestData),
+        Timer.scheduledTimer(timeInterval: 2,target:self,selector:#selector(self.requestData),
                                                userInfo:nil,repeats:true)
     }
     
@@ -47,28 +71,29 @@ class ViewController: NSViewController {
 
 extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
     
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let curr = stockArray[row]
         let id = tableColumn?.identifier
         
-        if id == "name" {
+        if id?.rawValue == "name" {
             let code = curr["code"]
-            let result : NameTableCell = tableView.makeViewWithIdentifier(id!, owner: self) as! NameTableCell
+            let result : NameTableCell = tableView.makeView(withIdentifier: id!, owner: self) as! NameTableCell
             result.itemField.stringValue = curr["name"]!
-            result.itemLabel.stringValue = code!.substringFromIndex(code!.startIndex.advancedBy(2))
+            result.itemLabel.stringValue = code!.substring(from: code!.characters.index(code!.startIndex, offsetBy: 2))
             return result
         } else {
             let rateStr = curr["rate"]! as String
             let rate = Float(rateStr)
-            let result : NSTableCellView = tableView.makeViewWithIdentifier(id!, owner: self) as! NSTableCellView
+            let result : NSTableCellView = tableView.makeView(withIdentifier: id!, owner: self) as! NSTableCellView
             let textField = result.textField;
-            textField?.textColor = rate > 0 ? NSColor.redColor() : rate < 0 ? NSColor.greenColor() : NSColor.blackColor()
-            textField?.stringValue  = id == "rate" ? (rateStr + "%") : curr[id!]!
+            textField?.textColor = rate > 0 ? NSColor.red : rate < 0 ? NSColor.green : NSColor.black
+            let index = id?.rawValue
+            textField?.stringValue  = id?.rawValue == "rate" ? (rateStr + "%") : curr[index!]!
             return result
         }
     }
     
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return stockArray.count
     }
     

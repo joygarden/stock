@@ -22,39 +22,39 @@ class EditViewController: NSViewController {
         let alpha = StockService.sharedInstance.readAlpha()
         alphaSlider.floatValue = (10 - Float(alpha)*10)
         codeArray = StockService.sharedInstance.readStockData();
-        self.stockEditTableView.setDataSource(self)
-        self.stockEditTableView.setDelegate(self)
-        stockEditTableView.registerForDraggedTypes([rowType])
+        self.stockEditTableView.dataSource = self
+        self.stockEditTableView.delegate = self
+        stockEditTableView.registerForDraggedTypes([NSPasteboard.PasteboardType(rawValue: rowType)])
     }
     
-    @IBAction func savePressed(sender: NSButton) {
+    @IBAction func savePressed(_ sender: NSButton) {
         StockService.sharedInstance.writeStockData(codeArray)
         StockService.sharedInstance.writeAlpha(1-alphaSlider.floatValue/10)
-        if (self.presentingViewController != nil) {
-            self.presentingViewController?.dismissViewController(self)
+        if (self.presenting != nil) {
+            self.presenting?.dismissViewController(self)
         }
     }
     
-    @IBAction func cancelPressed(sender: NSButton) {
-        if (self.presentingViewController != nil) {
-            self.presentingViewController?.dismissViewController(self)
+    @IBAction func cancelPressed(_ sender: NSButton) {
+        if (self.presenting != nil) {
+            self.presenting?.dismissViewController(self)
         }
         updateAlpha(StockService.sharedInstance.readAlpha())
     }
     
-    func updateAlpha(alpha : CGFloat)  {
-        NSApplication.sharedApplication().keyWindow!.alphaValue = CGFloat(alpha)
+    func updateAlpha(_ alpha : CGFloat)  {
+        NSApplication.shared.keyWindow!.alphaValue = CGFloat(alpha)
     }
     
-    @IBAction func valueChanged(sender: NSSlider) {
+    @IBAction func valueChanged(_ sender: NSSlider) {
         updateAlpha(CGFloat(1-sender.floatValue/10))
     }
     
-    func delPressed(sender : NSButton)  {
-        let code = sender.identifier
+    @objc func delPressed(_ sender : NSButton)  {
+        let code = sender.identifier?.rawValue
         for index in 0 ..< codeArray.count {
             if(codeArray[index]["code"] == code) {
-                codeArray.removeAtIndex(index)
+                codeArray.remove(at: index)
                 stockEditTableView.reloadData()
                 break
             }
@@ -66,61 +66,61 @@ class EditViewController: NSViewController {
 
 extension EditViewController: NSTableViewDataSource, NSTableViewDelegate {
 
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let curr = self.codeArray[row]
         let id = tableColumn?.identifier
         
-        if id == "name" {
-            let result : NameTableCell = tableView.makeViewWithIdentifier(id!, owner: self) as! NameTableCell
+        if id?.rawValue == "name" {
+            let result : NameTableCell = tableView.makeView(withIdentifier: id!, owner: self) as! NameTableCell
             let code = curr["code"]
             result.itemField.stringValue = curr["name"]!
-            result.itemLabel.stringValue = code!.substringFromIndex(code!.startIndex.advancedBy(2))
+            result.itemLabel.stringValue = code!.substring(from: code!.characters.index(code!.startIndex, offsetBy: 2))
             return result
         }
-        let result : NSTableCellView = tableView.makeViewWithIdentifier(id!, owner: self) as! NSTableCellView
-        if id == "del" {
+        let result : NSTableCellView = tableView.makeView(withIdentifier: id!, owner: self) as! NSTableCellView
+        if id?.rawValue == "del" {
             let btn = result.viewWithTag(0) as! NSButton
-            btn.identifier = curr["code"]
+            btn.identifier = curr["code"].map { NSUserInterfaceItemIdentifier(rawValue: $0) }
             btn.action = #selector(EditViewController.delPressed)
         }
         return result
     }
     
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return self.codeArray.count
     }
     
-    func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
-        let data = NSKeyedArchiver.archivedDataWithRootObject(rowIndexes)
-        pboard.declareTypes([rowType], owner: self)
-        pboard.setData(data, forType: rowType)
+    func tableView(_ tableView: NSTableView, writeRowsWith rowIndexes: IndexSet, to pboard: NSPasteboard) -> Bool {
+        let data = NSKeyedArchiver.archivedData(withRootObject: rowIndexes)
+        pboard.declareTypes([NSPasteboard.PasteboardType(rawValue: rowType)], owner: self)
+        pboard.setData(data, forType: NSPasteboard.PasteboardType(rawValue: rowType))
         return true
     }
     
-    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
-        tableView.setDropRow(row, dropOperation: NSTableViewDropOperation.Above)
-        return NSDragOperation.Move
+    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
+        tableView.setDropRow(row, dropOperation: NSTableView.DropOperation.above)
+        return NSDragOperation.move
     }
     
-    func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
+    func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
         let pasteboard = info.draggingPasteboard()
-        let rowData = pasteboard.dataForType(rowType)
+        let rowData = pasteboard.data(forType: NSPasteboard.PasteboardType(rawValue: rowType))
         if rowData != nil {
-            let indexSet = NSKeyedUnarchiver.unarchiveObjectWithData(rowData!) as! NSIndexSet
-            let movingFromIndex = indexSet.firstIndex
-            let item = codeArray[movingFromIndex]
-            _moveItem(item, from: movingFromIndex, to: row)
+            let indexSet = NSKeyedUnarchiver.unarchiveObject(with: rowData!) as! IndexSet
+            let movingFromIndex = indexSet.first
+            let item = codeArray[movingFromIndex!]
+            _moveItem(item, from: movingFromIndex!, to: row)
             return true
         }
         return false
     }
     
-    func _moveItem(item : Dictionary<String,String>, from: Int, to: Int) {
-        codeArray.removeAtIndex(from)
+    func _moveItem(_ item : Dictionary<String,String>, from: Int, to: Int) {
+        codeArray.remove(at: from)
         if(to > codeArray.endIndex) {
             codeArray.append(item)
         } else {
-            codeArray.insert(item, atIndex: to)
+            codeArray.insert(item, at: to)
         }
         stockEditTableView.reloadData()
     }

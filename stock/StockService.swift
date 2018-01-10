@@ -10,6 +10,21 @@ import Foundation
 
 class StockService {
     
+//    private static var __once: () = {
+//            Static.instance = StockService()
+//        }()
+    
+    //    class var sharedInstance : StockService{
+    //        struct Static {
+    //            static var instance: StockService?
+    //            static var token: Int = 0
+    //        }
+    //        _ = StockService.__once
+    //        return Static.instance!
+    //    }
+    
+    static let sharedInstance = StockService()
+    
     //sh603398,sz300440...
     static var codes = ""
     
@@ -17,16 +32,7 @@ class StockService {
 
     static let STOCKS_KEY = "stocks"
     
-    class var sharedInstance : StockService{
-        struct Static {
-            static var instance: StockService?
-            static var token: dispatch_once_t = 0
-        }
-        dispatch_once(&Static.token) {
-            Static.instance = StockService()
-        }
-        return Static.instance!
-    }
+
     
     func initCodes()  {
         var code = ""
@@ -35,17 +41,17 @@ class StockService {
             for stock in codeArray {
                 code += stock["code"]!+","
             }
-            if code.containsString(","){
-                let index = code.endIndex.advancedBy(-1)
-                code = code.substringToIndex(index)
+            if code.contains(","){
+                let index = code.characters.index(code.endIndex, offsetBy: -1)
+                code = code.substring(to: index)
             }
         }
         StockService.codes = code
     }
 
     func readStockData() -> Array<Dictionary<String,String>> {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let data = defaults.arrayForKey(StockService.STOCKS_KEY)
+        let defaults = UserDefaults.standard
+        let data = defaults.array(forKey: StockService.STOCKS_KEY)
         if data != nil {
             return data as! Array<Dictionary<String,String>>
         }
@@ -56,11 +62,11 @@ class StockService {
 //        return listData["stocks"] as! Array<Dictionary<String,String>>
     }
     
-    func writeStockData(codeDict : Array<Dictionary<String,String>>) {
+    func writeStockData(_ codeDict : Array<Dictionary<String,String>>) {
         
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(codeDict, forKey: StockService.STOCKS_KEY)
+        let defaults = UserDefaults.standard
+        defaults.set(codeDict, forKey: StockService.STOCKS_KEY)
         initCodes()
 //
 //        let filePath = NSBundle.mainBundle().pathForResource("data.plist", ofType:nil )
@@ -72,17 +78,17 @@ class StockService {
     }
     
     func readAlpha() -> CGFloat {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let alpha = defaults.stringForKey(StockService.ALPHA_KEY)
+        let defaults = UserDefaults.standard
+        let alpha = defaults.string(forKey: StockService.ALPHA_KEY)
         return alpha == nil ? CGFloat(0.8) : CGFloat(Float(alpha!)!)
     }
     
-    func writeAlpha(alpha : Float)  {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(alpha, forKey: StockService.ALPHA_KEY)
+    func writeAlpha(_ alpha : Float)  {
+        let defaults = UserDefaults.standard
+        defaults.set(alpha, forKey: StockService.ALPHA_KEY)
     }
     
-    func addStock(code : String)  {
+    func addStock(_ code : String)  {
         if(code.characters.count != 6) {
             return
         }
@@ -103,9 +109,9 @@ class StockService {
             }
         }
         
-        let url = NSURL(string: "http://qt.gtimg.cn/q="+addCode!)
+        let url = URL(string: "http://qt.gtimg.cn/q="+addCode!)
         let enc = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue))
-        NSURLSession.sharedSession().dataTaskWithURL(url!) { (data, resp, error) in
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, resp, error) in
             if data != nil {
                 if let text = NSString(data:data!, encoding: enc) {
                     let stockDict = self.generateStockArrayForString(text as String)[0]
@@ -114,30 +120,30 @@ class StockService {
                     if StockService.codes.isEmpty {
                         StockService.codes = addCode!
                     } else {
-                        if StockService.codes.componentsSeparatedByString(addCode!).count > 1 {
+                        if StockService.codes.components(separatedBy: addCode!).count > 1 {
                             return
                         }
                         StockService.codes += ","+(addCode!)
                     }
                 }
             }
-        }.resume()
+        }) .resume()
     }
     
-    func generateStockArrayForString(text:String) -> Array<Dictionary<String,String>> {
+    func generateStockArrayForString(_ text:String) -> Array<Dictionary<String,String>> {
         var stockData = Array<Dictionary<String,String>>()
         if !text.isEmpty {
-            let result = text.stringByReplacingOccurrencesOfString("\"", withString: "")
-                .stringByReplacingOccurrencesOfString("\n", withString: "")
-            let stocks = result.componentsSeparatedByString(";")
+            let result = text.replacingOccurrences(of: "\"", with: "")
+                .replacingOccurrences(of: "\n", with: "")
+            let stocks = result.components(separatedBy: ";")
             for stock in stocks {
-                if stock.containsString("=") {
-                    let tmp1 = stock.componentsSeparatedByString("=")
-                    let tmp2 = tmp1[1].componentsSeparatedByString("~")
+                if stock.contains("=") {
+                    let tmp1 = stock.components(separatedBy: "=")
+                    let tmp2 = tmp1[1].components(separatedBy: "~")
                     var data = Dictionary<String,String>()
                     let code = tmp1[0]
                     data["name"] = tmp2[1]
-                    data["code"] = code.substringFromIndex(code.startIndex.advancedBy(2))
+                    data["code"] = code.substring(from: code.characters.index(code.startIndex, offsetBy: 2))
                     data["price"] = tmp2[3]
                     data["rate"] = tmp2[32]
                     stockData.append(data)

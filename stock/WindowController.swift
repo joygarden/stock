@@ -12,7 +12,7 @@ class WindowController: NSWindowController {
     
     override func windowDidLoad() {
         super.windowDidLoad()
-        self.window!.opaque = false;
+        self.window!.isOpaque = false;
         self.window!.alphaValue = StockService.sharedInstance.readAlpha()
     }
 }

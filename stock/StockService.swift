@@ -42,8 +42,8 @@ class StockService {
                 code += stock["code"]!+","
             }
             if code.contains(","){
-                let index = code.characters.index(code.endIndex, offsetBy: -1)
-                code = code.substring(to: index)
+                let endIndex = code.index(code.endIndex, offsetBy: -1)
+                code = String(code[..<endIndex])
             }
         }
         StockService.codes = code
@@ -89,7 +89,7 @@ class StockService {
     }
     
     func addStock(_ code : String)  {
-        if(code.characters.count != 6) {
+        if(code.count != 6) {
             return
         }
         var addCode : String?
@@ -143,7 +143,8 @@ class StockService {
                     var data = Dictionary<String,String>()
                     let code = tmp1[0]
                     data["name"] = tmp2[1]
-                    data["code"] = code.substring(from: code.characters.index(code.startIndex, offsetBy: 2))
+//                    data["code"] = code.substring(from: code.index(code.startIndex, offsetBy: 2))
+                    data["code"] = String(code[code.index(code.startIndex, offsetBy: 2)...])
                     data["price"] = tmp2[3]
                     data["rate"] = tmp2[32]
                     stockData.append(data)

@@ -74,7 +74,8 @@ extension EditViewController: NSTableViewDataSource, NSTableViewDelegate {
             let result : NameTableCell = tableView.makeView(withIdentifier: id!, owner: self) as! NameTableCell
             let code = curr["code"]
             result.itemField.stringValue = curr["name"]!
-            result.itemLabel.stringValue = code!.substring(from: code!.characters.index(code!.startIndex, offsetBy: 2))
+            result.itemLabel.stringValue = String(code![code!.index(code!.startIndex, offsetBy: 2)...])
+//            result.itemLabel.stringValue = code!.substring(from: code!.index(code!.startIndex, offsetBy: 2))
             return result
         }
         let result : NSTableCellView = tableView.makeView(withIdentifier: id!, owner: self) as! NSTableCellView

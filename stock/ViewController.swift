@@ -76,10 +76,12 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
         let id = tableColumn?.identifier
         
         if id?.rawValue == "name" {
-            let code = curr["code"]
+            var code = ""
+            code = curr["code"]!
             let result : NameTableCell = tableView.makeView(withIdentifier: id!, owner: self) as! NameTableCell
             result.itemField.stringValue = curr["name"]!
-            result.itemLabel.stringValue = code!.substring(from: code!.characters.index(code!.startIndex, offsetBy: 2))
+            result.itemLabel.stringValue = String(code[code.index(code.startIndex, offsetBy: 2)...])
+//            result.itemLabel.stringValue = code!.substring(from: code!.index(code!.startIndex, offsetBy: 2))
             return result
         } else {
             let rateStr = curr["rate"]! as String
